@@ -73,7 +73,7 @@ async function fetchPokemonDetails(pokemon) {
 
   return {
     id: pokemon.id,
-    name: pokemon.name,
+    name: capitalizeFirstLetter(pokemon.name),
     pokedexNumber: String(pokedexNumber).padStart(3, "0"),
     types,
     sprite,
@@ -101,6 +101,10 @@ let filtered_pokemons = computed(() => {
     return pokemon.name.includes(props.searchValue);
   });
 });
+
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 </script>
 
 <template>
@@ -137,7 +141,7 @@ let filtered_pokemons = computed(() => {
         <p class="pokemonNumber">#{{ pokemon.pokedexNumber }}</p>
       </div>
       <div :class="pokemon.typesQuant">
-        <img v-for="type in pokemon.types" :src="type.icon" alt="" />
+        <img class="imgType" v-for="type in pokemon.types" :src="type.icon" alt="" />
       </div>
     </div>
     <h1 v-if="filtered_pokemons == 0">Não foi encontrado nenhum pokemon com o nome: '{{ props.searchValue }}'</h1>
@@ -150,19 +154,13 @@ let filtered_pokemons = computed(() => {
   src: url("../../public/pokemon_classic/Pokemon Classic.ttf")
     format("truetype");
 }
-.regionSelect {
-  text-align: center;
-}
-
-.regionSelect a {
-  margin: 10px;
-}
 .allCards {
   position: absolute;
   height: 100%;
   width: calc(100% - 240px);
   left: 240px;
   display: flex;
+  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 100px;
@@ -172,9 +170,8 @@ let filtered_pokemons = computed(() => {
   border-radius: 20px;
   width: 367px;
   height: 100px;
-  display: grid;
-  grid-template-areas: "pokemonIcon pokemonInfo pokemonType";
-  margin: 15px;
+  display: flex;
+  justify-content: space-around;
 }
 .card:hover {
   background-color: var(--blackColor);
@@ -184,46 +181,59 @@ let filtered_pokemons = computed(() => {
 
 .pokemonInfo {
   font-family: "Pokemon Classic", Arial, sans-serif;
-  grid-area: pokemonInfo;
-  margin: 25px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100px;
 }
 .monotype {
-  margin: 35px auto;
-  margin-right: 1px;
-  grid-area: pokemonType;
   display: flex;
-  width: 128px;
-  height: 28px;
+  flex-direction: column;
+  justify-content: center;
+  width: 36%;
 }
 .monotype img {
   margin: 0 auto;
 }
 
 .doubletype {
-  margin: 35px 0px;
-  margin-right: 1px;
-  grid-area: pokemonType;
   display: flex;
-  width: 128px;
-  height: 28px;
-}
-.doubletype img {
-  margin-right: 5px;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
 }
 .pokemonIcon {
-  grid-area: pokemonIcon;
-  display: flex;
   width: 100px;
   height: 100px;
 }
 .pokemonName {
   font-size: 18px;
-  padding-left: 0px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .pokemonNumber {
   font-size: 14px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+@media(max-width: 600px) {
+  .allCards {
+  width: calc(100% - 80px);
+  left: 80px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 100px;
+  }
+  .card{
+    width: 90%;
+  }
+}
+@media(max-width: 480px) {
+  .doubletype{
+    flex-direction: column;
+    margin: 20px auto;
+  }
+}
+
 </style>

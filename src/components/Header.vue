@@ -288,4 +288,18 @@
   font-size: 20px;
   border-radius: 12px;
 }
+
+@media(max-width: 600px) {
+  .navbar {
+    width: 70px;
+  }
+
+  .logoName{
+    display: none;
+  }
+  span{
+    display: none;
+  }
+  
+}
 </style>
