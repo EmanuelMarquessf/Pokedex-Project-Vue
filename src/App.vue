@@ -69,7 +69,7 @@ function RegionSelect() {
     <PokemonCard :firstPokemonCount = 'firstPokemonCount' :maxPokemonCount = 'maxPokemonCount' :searchValue = 'search' ></PokemonCard>
   </main>
 </template>
-
+<!-- iiiiiiiii-->
 <style>
   :root{
     --backgroundColor: #007369;
