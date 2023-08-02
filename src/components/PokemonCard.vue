@@ -156,14 +156,13 @@ function capitalizeFirstLetter(str) {
 }
 .allCards {
   position: absolute;
-  height: 100%;
   width: calc(100% - 240px);
   left: 240px;
   display: flex;
-  gap: 20px;
+  gap: 15px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 100px;
+  align-content: center;
 }
 .card {
   background-color: var(--cardsColor);

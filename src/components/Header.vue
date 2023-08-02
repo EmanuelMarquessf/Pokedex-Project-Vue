@@ -176,6 +176,7 @@
   font-size: 22px;
 }
 
+
 .navbar ul .itensHeader a, #dropdownMenu{
   border-radius: 12px;
   color: #fff;
