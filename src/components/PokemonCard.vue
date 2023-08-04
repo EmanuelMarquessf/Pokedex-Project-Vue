@@ -1,4 +1,6 @@
 <script setup>
+import PokemonInfoDialog from "./PokemonInfoDialog.vue";
+
 import {
   defineProps,
   computed,
@@ -11,6 +13,8 @@ import {
 let data = ref([]);
 const pokemons = ref([]);
 let typesQuant = ref();
+let showDialog = ref(false);
+let selectedPokemonId = ref("");
 
 const props = defineProps({
   firstPokemonCount: Number,
@@ -72,7 +76,7 @@ async function fetchPokemonDetails(pokemon) {
   const typesQuant = types.length > 1 ? "doubletype" : "monotype";
 
   return {
-    id: pokemon.id,
+    id: details.id,
     name: capitalizeFirstLetter(pokemon.name),
     pokedexNumber: String(pokedexNumber).padStart(3, "0"),
     types,
@@ -105,17 +109,22 @@ let filtered_pokemons = computed(() => {
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+function showPokemon(id) {
+  selectedPokemonId.value = id;
+  showDialog.value = !showDialog.value;
+}
 </script>
 
 <template>
-  {{ props.searchValue }}
+  valor: {{ showDialog }}
   <div class="allCards" v-if="props.searchValue == ''">
     <div
       class="card"
       v-for="pokemon in pokemons"
       :v-if="pokemon.name == props.searchValue"
       :key="pokemon.id"
-      @click=""
+      @click="showPokemon(pokemon.id)"
     >
       <img :src="pokemon.sprite" alt="" class="pokemonIcon" />
       <div class="pokemonInfo">
@@ -128,12 +137,13 @@ function capitalizeFirstLetter(str) {
     </div>
   </div>
 
-  <div class="allCards" v-else-if="props.searchValue != ''">
+  <div class="allCards" v-else-if="props.searchValue != ''" @click="">
     <div
       class="card"
       v-for="pokemon in filtered_pokemons"
       :v-if="pokemon.name == props.searchValue"
       :key="pokemon.id"
+      @click="showPokemon(pokemon.id)"
     >
       <img :src="pokemon.sprite" alt="" class="pokemonIcon" />
       <div class="pokemonInfo">
@@ -141,11 +151,21 @@ function capitalizeFirstLetter(str) {
         <p class="pokemonNumber">#{{ pokemon.pokedexNumber }}</p>
       </div>
       <div :class="pokemon.typesQuant">
-        <img class="imgType" v-for="type in pokemon.types" :src="type.icon" alt="" />
+        <img
+          class="imgType"
+          v-for="type in pokemon.types"
+          :src="type.icon"
+          alt=""
+        />
       </div>
     </div>
-    <h1 v-if="filtered_pokemons == 0">Não foi encontrado nenhum pokemon com o nome: '{{ props.searchValue }}'</h1>
   </div>
+
+  <PokemonInfoDialog
+    v-if="showDialog"
+    @close="showDialog = false"
+    :selectedPokemonId="selectedPokemonId"
+  ></PokemonInfoDialog>
 </template>
 
 <style scoped>
@@ -214,25 +234,24 @@ function capitalizeFirstLetter(str) {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
   .allCards {
-  width: calc(100% - 80px);
-  left: 80px;
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 100px;
+    width: calc(100% - 80px);
+    left: 80px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 100px;
   }
-  .card{
+  .card {
     width: 90%;
   }
 }
-@media(max-width: 480px) {
-  .doubletype{
+@media (max-width: 480px) {
+  .doubletype {
     flex-direction: column;
     margin: 20px auto;
   }
 }
-
 </style>
