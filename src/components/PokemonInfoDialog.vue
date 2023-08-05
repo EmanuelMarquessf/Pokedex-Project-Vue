@@ -2,8 +2,8 @@
 import { defineEmits, defineProps, onMounted, ref } from "vue";
 
 const emit = defineEmits(["close"]);
-let data = ref([]);
 let selectedPokemon = ref([]);
+let selectedPokemonDetails = ref([]);
 let typesQuant = ref();
 
 const props = defineProps({
@@ -33,13 +33,30 @@ onMounted(async () => {
         name: type.type.name,
         icon: `../../public/types/${type.type.name}.svg`,
       })),
+      speciesUrl: data.species.url,
     };
     console.log(data);
+    fetchSpecies()
     const typesQuant = data.types.length > 1 ? "doubletype" : "monotype";
   } catch (error) {
     console.error(error);
   }
 });
+
+async function fetchSpecies(){
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${props.selectedPokemonId}/`);
+    const data = await response.json();
+    selectedPokemonDetails.value = {
+      description: data.flavor_text_entries.find((entry) => entry.language.name === 'en').flavor_text,
+    };
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+  
+
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -51,10 +68,11 @@ function capitalizeFirstLetter(str) {
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
+          <div class="closeButton" @click="emit('close', false)">
+            <i class='bx bx-x'></i>
+          </div>
           <div class="modal-header">
-            <div class="pokemonImg">
-              <img :src="selectedPokemon.image" alt=""  />
-            </div>
+              <img :src="selectedPokemon.image" alt="" class="pokemonImg" />
             <div class="pokemonInfo">
               <div class="baseInfo">
                 <p class="pokemonName">{{ selectedPokemon.name }}</p>
@@ -68,22 +86,17 @@ function capitalizeFirstLetter(str) {
                 />
               </div>
             </div>
-            <slot name="header"> {{ selectedPokemon.height }} </slot>
+            <slot name="header">  </slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body"> default body </slot>
+            <slot name="body"> {{ selectedPokemonDetails.description }} </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
               default footer
-              <button
-                class="modal-default-button"
-                @click="emit('close', false)"
-              >
-                OK
-              </button>
+              
             </slot>
           </div>
         </div>
@@ -122,22 +135,23 @@ function capitalizeFirstLetter(str) {
   color: white;
 }
 
+.closeButton{
+  display: flex;
+  justify-content: end;
+  font-size: 30px;
+}
+
 .modal-header {
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
-.pokemonMedia {
-  align-items: center;
-  display: flex;
-  flex-basis: 60%;
-  flex-direction: column;
-  justify-content: center;
-}
+
 .pokemonImg {
   background-color: var(--cardsColor);
   border-radius: 60px;
-  width: 30em;
+  width: 50%;
 }
 .pokemonTypes {
   display: flex;
@@ -147,27 +161,22 @@ function capitalizeFirstLetter(str) {
   gap: 5px;
 }
 .pokemonTypes img{
-  width: 4rem;
+  width: 5em;
 }
 
 .pokemonInfo {
   display: flex;
-  flex-basis: 50%;
-  flex-direction: row;
-}
-
-.baseInfo{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2em;
 }
 .pokemonName {
-  font-size: 40px;
+  font-size: 4em;
   font-weight: bold;
 }
 .pokemonId {
-  font-size: 30px;
-  color: #373e59;
+  font-size: 2.5em;
+  color: #B3B3B3;
   font-weight: bold;
 }
 
@@ -200,5 +209,51 @@ function capitalizeFirstLetter(str) {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+@media (max-width:1024px){
+  .pokemonTypes img{
+    width: 4em;
+  }
+  .pokemonName {
+    font-size: 3em;
+  }
+  .pokemonId {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width:770px){
+  .pokemonName {
+    font-size: 2.5em;
+  }
+  .pokemonId {
+    font-size: 1.5em;
+  }
+}
+@media (max-width:430px){
+  .modal-container{
+    width: 80%;
+  }
+  .pokemonImg{
+    width: 80%;
+  }
+  .pokemonTypes img{
+    width: 3.5em;
+  }
+  .pokemonInfo{
+    gap: 1em;
+    flex-direction: row;
+    justify-content:space-evenly;
+    gap: 35px;
+  }
+  .pokemonTypes{
+    flex-direction: column;
+  }
+  .pokemonName {
+    font-size: 2em;
+  }
+  .pokemonId {
+    font-size: 1em;
+  }
 }
 </style>
