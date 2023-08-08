@@ -16,7 +16,7 @@ function changeRegion(newRegion){
 }
 
 function searchInput(newSearch){
-  search.value = newSearch
+  search.value = newSearch;
 }
 
 function RegionSelect() {
@@ -76,7 +76,8 @@ function RegionSelect() {
     --cardsColor: #02A676;
     --textColor: #f2f2f2;
     --headerColor: #003840;
-    --blackColor: #003840
+    --darkGreen: #003840;
+    --black: #1d1b31;
   }
   body{
     background-color: var(--backgroundColor);

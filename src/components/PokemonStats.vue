@@ -5,7 +5,9 @@ const props = defineProps({
   pokemonStats: Array,
 });
 
-console.log(props.pokemonStats);
+const stats = ['Hp', 'Atk', 'Def', 'Sp.Atk', 'Sp.Def', 'Speed'];
+let i=0;
+
 </script>
 
 <template>
@@ -19,8 +21,8 @@ console.log(props.pokemonStats);
       <tbody class="tbodyPokemonStats" v-for="stat in props.pokemonStats">
         <tr :class="'tr' + stat.stat.name">
           <td class="tdTitleBar">
-            {{ stat.stat.name }}:
-            {{stat.base_stat}}
+            <p>{{ stats[i++]}}:</p>
+            <p>{{stat.base_stat}}</p>
           </td>
           <td class="tdBar">
             <div :style="`width: ${stat.base_stat}px`" :class="`barStats ' ${stat.stat.name}`"></div>
@@ -33,24 +35,32 @@ console.log(props.pokemonStats);
 
 <style>
 .divPokemonStats{
-  display: flex;
-  justify-content: end;
-  align-items: center;
+  width: 45%;
 }
 
-
 .tablePokemonStats{
-  background-color: var(--cardsColor);
-  color: black;
+  background-color: var(--black);
   border-radius: 15px;
+  padding: 5px;
+  width: 100%;
 }
 
 .tdTitleBar{
   display: flex;
   align-items: center;
   justify-content:space-between;
-  height: 100%;
   padding: 3px;
+  text-transform: capitalize;
+  max-height: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  color: white;
+}
+
+.tdTitleBar p{
+  color: black;
 }
 
 .tdTitle{
@@ -59,15 +69,12 @@ console.log(props.pokemonStats);
   padding: 5px;
 }
 
-
-
 .tdBar{
 width: 60%;
 }
 
 .barStats{
   padding: 15px;
-  color: white;
   border-radius: 2px;
 }
 
@@ -114,4 +121,11 @@ width: 60%;
   background-color: #f85888;
   border: 1px solid #a13959;
 }
+
+@media(max-width:1440px){
+  .divPokemonStats{
+    width: 100%;
+  }
+}
+
 </style>
