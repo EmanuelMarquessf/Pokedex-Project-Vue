@@ -77,7 +77,7 @@ async function fetchPokemonDetails(pokemon) {
 
   return {
     id: details.id,
-    name: capitalizeFirstLetter(pokemon.name),
+    name: pokemon.name,
     pokedexNumber: String(pokedexNumber).padStart(3, "0"),
     types,
     sprite,
@@ -105,10 +105,6 @@ let filtered_pokemons = computed(() => {
     return pokemon.name.includes(props.searchValue);
   });
 });
-
-function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 function showPokemon(id) {
   selectedPokemonId.value = id;
@@ -193,7 +189,7 @@ function showPokemon(id) {
   justify-content: space-around;
 }
 .card:hover {
-  background-color: var(--blackColor);
+  background-color: var(--darkGreen);
   color: #fff;
   transition: all ease 0.4s;
 }
@@ -228,6 +224,7 @@ function showPokemon(id) {
 .pokemonName {
   font-size: 18px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: capitalize;
 }
 .pokemonNumber {
   font-size: 14px;

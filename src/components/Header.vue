@@ -162,7 +162,7 @@
   border-radius: 12px;
   outline: none;
   border: none;
-  background:#1d1b31;
+  background:var(--black);
   padding-left: 50px;
   font-size: 18px;
   color: #fff;
@@ -221,7 +221,7 @@
 
 .dropDownActive{
   cursor: pointer;
-  background-color: #1d1b31;
+  background-color: var(--black);
   border-radius: 12px;
   margin: 0px 5px;
   list-style: none;
@@ -260,7 +260,7 @@
   position: relative;
   padding: 10px 6px;
   height: 60px;
-  background: #1d1b31 ;
+  background: var(--black) ;
 }
 .navbar .profileContent .profile .profileDetails{
   display: flex;

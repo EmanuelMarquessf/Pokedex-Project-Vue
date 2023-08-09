@@ -67,6 +67,7 @@ let i=0;
   text-align: center;
   font-size: 25px;
   padding: 5px;
+  
 }
 
 .tdBar{
@@ -123,6 +124,11 @@ width: 60%;
 }
 
 @media(max-width:1440px){
+  .divPokemonStats{
+    width: 48%;
+  }
+}
+@media (max-width: 770px) {
   .divPokemonStats{
     width: 100%;
   }

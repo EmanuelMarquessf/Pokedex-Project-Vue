@@ -1,9 +1,14 @@
 <script setup>
-import { defineEmits, defineProps, defineAsyncComponent, onBeforeMount, onMounted, ref } from "vue";
+import {
+  defineEmits,
+  defineProps,
+  defineAsyncComponent,
+  onBeforeMount,
+  onMounted,
+  ref,
+} from "vue";
 
-const PokemonStats = defineAsyncComponent(() =>
-  import("./PokemonStats.vue")
-)
+const PokemonStats = defineAsyncComponent(() => import("./PokemonStats.vue"));
 
 const emit = defineEmits(["close"]);
 let selectedPokemon = ref([]);
@@ -40,7 +45,7 @@ onBeforeMount(async () => {
       })),
       speciesUrl: data.species.url,
     };
-    //console.log(data);
+    console.log(data);
     fetchSpecies();
   } catch (error) {
     console.error(error);
@@ -49,7 +54,7 @@ onBeforeMount(async () => {
 
 onMounted(async () => {
   showStats.value = true;
-})
+});
 
 async function fetchSpecies() {
   try {
@@ -61,8 +66,11 @@ async function fetchSpecies() {
       description: data.flavor_text_entries.find(
         (entry) => entry.language.name === "en"
       ).flavor_text,
+      genera: data.genera[7].genus,
+      capture_rate: data.capture_rate,
+      shape: data.shape.name,
     };
-    //console.log(data);
+    console.log(data);
   } catch (error) {
     console.error(error);
   }
@@ -71,7 +79,6 @@ async function fetchSpecies() {
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
 </script>
 
 <template>
@@ -83,27 +90,62 @@ function capitalizeFirstLetter(str) {
             <i class="bx bx-x"></i>
           </div>
           <div class="modal-header">
-            <img :src="selectedPokemon.image" alt="" class="pokemonImg" />
+            <div class="pokemonImg">
+              <img :src="selectedPokemon.image" alt="" />
+            </div>
             <div class="pokemonInfo">
               <div class="baseInfo">
-                <p class="pokemonName">{{ selectedPokemon.name }}</p>
-                <p class="pokemonId">#{{ selectedPokemon.pokedexNumber }}</p>
+                <div>
+                  <p class="pokemonName">{{ selectedPokemon.name }}</p>
+                  <p class="pokemonId">#{{ selectedPokemon.pokedexNumber }}</p>
+                </div>
+                <div class="pokemonTypes">
+                  <img
+                    v-for="type in selectedPokemon.types"
+                    :src="type.icon"
+                    alt=""
+                  />
+                </div>
               </div>
-              <div class="pokemonTypes">
-                <img
-                  v-for="type in selectedPokemon.types"
-                  :src="type.icon"
-                  alt=""
-                />
+              <div class="pokemonDescription">
+                {{ selectedPokemonDetails.description }}
               </div>
             </div>
             <slot name="header"> </slot>
           </div>
           <div class="modal-body">
-            <p class="pokemonDescription"> {{ selectedPokemonDetails.description }} </p>
-            <PokemonStats
-              :pokemonStats="selectedPokemon.stats"
-            ></PokemonStats>
+            <div class="pokemonData">
+              <ul>
+                <li>
+                  <p class="liTitle">Genera:</p>
+                  <p>{{ selectedPokemonDetails.genera }}</p>
+                </li>
+                <li>
+                  <p class="liTitle">Shape:</p>
+                  <p class="pShape">{{ selectedPokemonDetails.shape }}</p>
+                </li>
+                <li>
+                  <p class="liTitle">Heigth:</p>
+                  <p>{{ (selectedPokemon.height / 10).toFixed(2) }} m</p>
+                </li>
+                <li>
+                  <p class="liTitle">Weigth:</p>
+                  <p>{{ (selectedPokemon.weight / 10).toFixed(2) }} kg</p>
+                </li>
+                <li>
+                  <p class="liTitle">Capture Rate:</p>
+                  <p>
+                    {{ selectedPokemonDetails.capture_rate }} ({{
+                      (
+                        (selectedPokemonDetails.capture_rate / 255) *
+                        100
+                      ).toFixed(2)
+                    }}%)
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <PokemonStats :pokemonStats="selectedPokemon.stats"></PokemonStats>
           </div>
           <div class="modal-footer">
             <slot name="footer"> default footer </slot>
@@ -133,7 +175,7 @@ function capitalizeFirstLetter(str) {
 }
 
 .modal-container {
-  width: 55%;
+  width: 65%;
   height: 100vh;
   margin: 0px auto;
   padding: 20px 30px;
@@ -155,65 +197,109 @@ function capitalizeFirstLetter(str) {
 .modal-header {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: left;
+  background-color: var(--black);
+  border-radius: 65px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .pokemonImg {
   background-color: var(--cardsColor);
-  border-radius: 60px;
-  width: 50%;
+  border-radius: 65px;
+  object-fit: cover;
+  width: 45%;
+}
+
+.pokemonImg img {
+  width: 100%;
+  height: 100%;
+}
+.baseInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pokemonInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 50px;
+  width: 45%;
+  flex-wrap: wrap;
 }
 .pokemonTypes {
   display: flex;
   align-items: center;
   align-content: center;
-  justify-content: center;
-  gap: 5px;
+  gap: 10px;
 }
 .pokemonTypes img {
   width: 5em;
 }
 
-.pokemonInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2em;
-}
 .pokemonName {
   font-size: 4em;
   font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
 }
 .pokemonId {
   font-size: 2.5em;
   color: #b3b3b3;
   font-weight: bold;
+  font-family: "Roboto", sans-serif;
 }
-
-.modal-body {
-  margin: 20px 0;
-  display: flex;
-  flex-direction:column;
-  justify-content: space-around;
-  gap:2rem;
-}
-
-.pokemonDescription{
-  font-size: 20px;
-}
-.PokemonStats{
-  background-color: white;
+.pokemonDescription {
+  font-size: 2rem;
+  text-align: justify;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
   width: 100%;
 }
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
+.modal-body {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.pokemonData {
+  background-color: var(--black);
+  padding: 20px;
+  width: 35rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pokemonData p {
+  font-size: 2rem;
+}
+.pokemonData ul {
+  border-radius: 20px;
+}
+.pokemonData ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  border-bottom: #f2f2f2 1px solid;
+  font-size: 20px;
+  line-height: 45px;
+  color: #b3b3b3;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+.pShape {
+  text-transform: capitalize;
+}
+.liTitle {
+  font-weight: bold;
+  color: #fff;
+}
 
 .modal-enter {
   opacity: 0;
@@ -228,9 +314,46 @@ function capitalizeFirstLetter(str) {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-@media (max-width: 1024px) {
+
+@media (max-width: 1440px) {
+  .pokemonData {
+    width: 48%;
+  }
+  .pokemonData p{
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1140px) {
+  .modal-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-top-left-radius: 65px;
+    border-top-right-radius: 65px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .pokemonImg {
+    width: 100%;
+  }
+  .pokemonInfo {
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+  }
+  .baseInfo {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .pokemonDescription {
+    padding: 0px 45px 30px 45px;
+  }
+  .pokemonTypes {
+    flex-direction: column;
+  }
   .pokemonTypes img {
-    width: 4em;
+    width: 5em;
   }
   .pokemonName {
     font-size: 3em;
@@ -238,6 +361,7 @@ function capitalizeFirstLetter(str) {
   .pokemonId {
     font-size: 1.5em;
   }
+
 }
 
 @media (max-width: 770px) {
@@ -247,13 +371,19 @@ function capitalizeFirstLetter(str) {
   .pokemonId {
     font-size: 1.5em;
   }
+  .pokemonData{
+    width: 100%;
+  }
+  .pokemonData p{
+    font-size: 1.5rem;
+  }
 }
-@media (max-width: 430px) {
+@media (max-width: 600px) {
   .modal-container {
     width: 80%;
   }
   .pokemonImg {
-    width: 80%;
+    width: 100%;
   }
   .pokemonTypes img {
     width: 3.5em;
@@ -262,7 +392,7 @@ function capitalizeFirstLetter(str) {
     gap: 1em;
     flex-direction: row;
     justify-content: space-evenly;
-    gap: 35px;
+    gap: 10px;
   }
   .pokemonTypes {
     flex-direction: column;
@@ -272,6 +402,14 @@ function capitalizeFirstLetter(str) {
   }
   .pokemonId {
     font-size: 1em;
+  }
+  .pokemonDescription {
+    font-size: 1.5rem;
+    padding: 0px 30px 30px 30px;
+  }
+
+  .pokemonData p {
+    font-size: 1rem;
   }
 }
 </style>
