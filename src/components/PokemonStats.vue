@@ -35,7 +35,8 @@ let i=0;
 
 <style>
 .divPokemonStats{
-  width: 45%;
+  flex-basis: 15rem;
+  flex-grow: 1;
 }
 
 .tablePokemonStats{
@@ -122,7 +123,7 @@ width: 60%;
   background-color: #f85888;
   border: 1px solid #a13959;
 }
-
+/*
 @media(max-width:1440px){
   .divPokemonStats{
     width: 48%;
@@ -133,5 +134,6 @@ width: 60%;
     width: 100%;
   }
 }
+*/
 
 </style>

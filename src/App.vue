@@ -26,36 +26,36 @@ function RegionSelect() {
       maxPokemonCount.value = 151;
       break;
     case "johto":
-      firstPokemonCount.value = 152;
+      firstPokemonCount.value = 151;
       maxPokemonCount.value = 251;
       break;
     case "hoenn":
-      firstPokemonCount.value = 252;
+      firstPokemonCount.value = 251;
       maxPokemonCount.value = 386;
       break;
     case "sinnoh":
-      firstPokemonCount.value = 387;
+      firstPokemonCount.value = 386;
       maxPokemonCount.value = 493;
       break;
     case "unova":
-      firstPokemonCount.value = 494;
+      firstPokemonCount.value = 493;
       maxPokemonCount.value = 649;
       break;
     case "kalos":
-      firstPokemonCount.value = 650;
+      firstPokemonCount.value = 649;
       maxPokemonCount.value = 721;
       break;
     case "alola":
-      firstPokemonCount.value = 722;
+      firstPokemonCount.value = 721;
       maxPokemonCount.value = 809;
       break;
     case "galar":
-      firstPokemonCount.value = 810;
+      firstPokemonCount.value = 809;
       maxPokemonCount.value = 898;
       break;
-    default:
-      firstPokemonCount.value = 811;
-      maxPokemonCount.value = 1000;
+    case "paldea":
+      firstPokemonCount.value = 905;
+      maxPokemonCount.value = 1010;
       break;
   }
   search.value = ''

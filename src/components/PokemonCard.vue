@@ -34,7 +34,7 @@ async function fetchData(url) {
 }
 
 onBeforeMount(async () => {
-  const apiUrl = "https://pokeapi.co/api/v2/pokemon?limit=1000";
+  const apiUrl = "https://pokeapi.co/api/v2/pokemon?limit=1010";
   const response = await fetchData(apiUrl);
   if (response && response.results) {
     data.value = response;

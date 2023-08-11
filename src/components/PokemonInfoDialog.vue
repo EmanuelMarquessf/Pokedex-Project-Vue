@@ -9,6 +9,7 @@ import {
 } from "vue";
 
 const PokemonStats = defineAsyncComponent(() => import("./PokemonStats.vue"));
+const PokemonEvolution = defineAsyncComponent(() => import("./PokemonEvolution.vue"));
 
 const emit = defineEmits(["close"]);
 let selectedPokemon = ref([]);
@@ -69,6 +70,7 @@ async function fetchSpecies() {
       genera: data.genera[7].genus,
       capture_rate: data.capture_rate,
       shape: data.shape.name,
+      evolutionChain: data.evolution_chain.url,
     };
     console.log(data);
   } catch (error) {
@@ -148,7 +150,7 @@ function capitalizeFirstLetter(str) {
             <PokemonStats :pokemonStats="selectedPokemon.stats"></PokemonStats>
           </div>
           <div class="modal-footer">
-            <slot name="footer"> default footer </slot>
+            <PokemonEvolution :evolutionChain="selectedPokemonDetails.evolutionChain"></PokemonEvolution>
           </div>
         </div>
       </div>
@@ -208,7 +210,6 @@ function capitalizeFirstLetter(str) {
   background-color: var(--cardsColor);
   border-radius: 65px;
   object-fit: cover;
-  width: 45%;
 }
 
 .pokemonImg img {
@@ -239,10 +240,10 @@ function capitalizeFirstLetter(str) {
 }
 
 .pokemonName {
-  font-size: 4em;
+  font-size: 5em;
   font-weight: bold;
   font-family: "Roboto", sans-serif;
-  font-weight: 700;
+  font-weight: 800;
 }
 .pokemonId {
   font-size: 2.5em;
@@ -268,7 +269,8 @@ function capitalizeFirstLetter(str) {
 .pokemonData {
   background-color: var(--black);
   padding: 20px;
-  width: 35rem;
+  flex-basis: 25rem;
+  flex-grow: 1;
   border-radius: 20px;
   white-space: nowrap;
   overflow: hidden;
@@ -316,15 +318,13 @@ function capitalizeFirstLetter(str) {
 }
 
 @media (max-width: 1440px) {
-  .pokemonData {
-    width: 48%;
-  }
   .pokemonData p{
     font-size: 1.5rem;
   }
+  
 }
 
-@media (max-width: 1140px) {
+@media (max-width: 1490px) {
   .modal-header {
     display: flex;
     flex-direction: column;
@@ -333,6 +333,7 @@ function capitalizeFirstLetter(str) {
     border-top-right-radius: 65px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    flex-grow: 1;
   }
   .pokemonImg {
     width: 100%;
@@ -345,21 +346,27 @@ function capitalizeFirstLetter(str) {
   .baseInfo {
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 150px;
+    justify-content: space-around;
   }
+
   .pokemonDescription {
-    padding: 0px 45px 30px 45px;
+    padding: 0px 45px 40px 45px;
   }
   .pokemonTypes {
     flex-direction: column;
+    justify-content: center;
   }
   .pokemonTypes img {
-    width: 5em;
+    width: 7em;
   }
   .pokemonName {
-    font-size: 3em;
+    font-size: 4em;
   }
   .pokemonId {
-    font-size: 1.5em;
+    font-size: 3em;
   }
 
 }
@@ -371,9 +378,7 @@ function capitalizeFirstLetter(str) {
   .pokemonId {
     font-size: 1.5em;
   }
-  .pokemonData{
-    width: 100%;
-  }
+
   .pokemonData p{
     font-size: 1.5rem;
   }
@@ -411,5 +416,32 @@ function capitalizeFirstLetter(str) {
   .pokemonData p {
     font-size: 1rem;
   }
+@media (max-width: 425px) {
+  .pokemonInfo{
+    gap: 1rem;
+  }
+  .baseInfo{
+    gap: 1rem;
+    justify-content: center;
+  }
+  .pokemonName{
+    font-size: 1.5rem;
+  }
+  .pokemonDescription{
+    font-size: 1rem;
+  }
+}
+@media (max-width: 320px) {
+  .pokemonName{
+    font-size: 1.1rem;
+    gap:0.5rem
+  }
+
+  .pokemonData{
+    font-size: 10px;
+  }
+}
+
+
 }
 </style>
