@@ -417,6 +417,9 @@ function capitalizeFirstLetter(str) {
     font-size: 1rem;
   }
 @media (max-width: 425px) {
+  .modal-container{
+    width: 100%;
+  }
   .pokemonInfo{
     gap: 1rem;
   }

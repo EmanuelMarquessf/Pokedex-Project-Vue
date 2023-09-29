@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineProps, onBeforeMount, watch} from "vue";
 
-const props = defineProps({
+const props = defineProps({   
   evolutionChain: String,
 });
 
@@ -26,7 +26,10 @@ onBeforeMount(async () => {
   try {
     if(props.evolutionChain){
       const response = await fetch(`${props.evolutionChain}`);
-    data = await response.json();
+      data = await response.json();
+      evolutionChain.value = {
+      chain: data.evolves_to.chain.evolves_to[0].species.name,
+    }
     console.log(data);
     }
     
@@ -38,7 +41,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <img src="" alt="">
+    {{ evolutionChain.chain }}
   </div>
 </template>
 

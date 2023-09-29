@@ -4,9 +4,17 @@
   const emit = defineEmits(['RegionSelect'], ['SearchPokemon'])
   let dropdownOpen = ref(false);
   let region = ref('kanto');
-  let search = ref('')
+  let search = ref('');
+  let menu = ref(false)
   
-  function dropdownClick(){dropdownOpen.value = !dropdownOpen.value};
+  function dropdownClick(){
+    dropdownOpen.value = !dropdownOpen.value;
+    
+  };
+
+  function menuClick(){
+    menu.value = !menu.value
+  }
 
   watch(region, () =>{
     emit('RegionSelect', region.value)
@@ -21,35 +29,37 @@
 
 <template>
   <header>
-    <nav class="navbar">
-      <div class="logoContent">
+    <nav class="navbar" :class="{navbarActive: menu,  navbarInative: !menu}">
+      <div  class="logoContent">
         <div class="logo">
-          <img src="../../public/img/pokemon.svg" alt="">
-          <div class="logoName">Pokedex</div>
+          <img @click="menu=true" class="logoImg" src="../../public/img/pokemon.svg" alt="">
+          <div class="logoName"><span>Pokedex</span></div>
         </div>
-        <i class="bx bx-menu" id="btn"></i>
+        <i @click="menu = false" class="bx bx-x closeButton"></i>
       </div>
       <ul>
         <li class="itensHeader">
-          <i class="bx bx-search"></i>
+          <i @click="menu = true"  class="bx bx-search"></i>
           <input type="text" placeholder="search" ref="search" @keyup.enter="SearchPokemon()"/>
         </li>
         <li :class="{dropDownActive: dropdownOpen, dropDownInative: !dropdownOpen}">
-          <div href="#" id="dropdownMenu" @click="dropdownClick()" >
-            <i class="bx bxs-user"></i>
-            <span>Region</span>
+          <div class="regionButton" href="#" id="dropdownMenu" @click="dropdownClick()" >
+            <div>
+              <i class="bx bxs-user"></i>
+              <span>Region</span>
+            </div>
             <i class='bx bxs-down-arrow'></i>
           </div>
           <ul class="submenu" v-if="dropdownOpen">
-            <li><a @click.prevent="region = 'kanto', search.value = ''">Kanto</a></li>
-            <li><a @click.prevent="region = 'johto', search.value = ''">Johto</a></li>
-            <li><a @click.prevent="region = 'hoenn', search.value = ''">Hoenn</a></li>
-            <li><a @click.prevent="region = 'sinnoh', search.value = ''">Sinnoh</a></li>
-            <li><a @click.prevent="region = 'unova', search.value = ''">Unova</a></li>
-            <li><a @click.prevent="region = 'kalos', search.value = ''">Kalos</a></li>
-            <li><a @click.prevent="region = 'alola', search.value = ''">Alola</a></li>
-            <li><a @click.prevent="region = 'galar', search.value = ''">Galar</a></li>
-            <li><a @click.prevent="region = 'paldea', search.value = ''">Paldea</a></li>
+            <li><a @click.prevent="region = 'kanto', search.value = '', dropdownOpen = false, menu = false">Kanto</a></li>
+            <li><a @click.prevent="region = 'johto', search.value = '', dropdownOpen = false, menu = false">Johto</a></li>
+            <li><a @click.prevent="region = 'hoenn', search.value = '', dropdownOpen = false, menu = false">Hoenn</a></li>
+            <li><a @click.prevent="region = 'sinnoh', search.value = '', dropdownOpen = false, menu = false">Sinnoh</a></li>
+            <li><a @click.prevent="region = 'unova', search.value = '', dropdownOpen = false, menu = false">Unova</a></li>
+            <li><a @click.prevent="region = 'kalos', search.value = '', dropdownOpen = false, menu = false">Kalos</a></li>
+            <li><a @click.prevent="region = 'alola', search.value = '', dropdownOpen = false, menu = false">Alola</a></li>
+            <li><a @click.prevent="region = 'galar', search.value = '', dropdownOpen = false, menu = false">Galar</a></li>
+            <li><a @click.prevent="region = 'paldea', search.value = '', dropdownOpen = false, menu = false">Paldea</a></li>
           </ul>
         </li>
         <li class="itensHeader">
@@ -90,7 +100,18 @@
 * {
   font-family: "Poppins";
 }
-.navbar {
+.navbarActive {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100%;
+  background-color: var(--headerColor);
+  font-size: 22px;
+  font-weight: 500px;
+  padding: 6px 14px;
+}
+.navbarInative {
   position: fixed;
   top: 0;
   left: 0;
@@ -105,6 +126,7 @@
 .logoContent {
   color: #fff;
   display: flex;
+  flex-direction: row;
   height: 50px;
   width: 100%;
   align-items: center;
@@ -135,6 +157,10 @@
   line-height: 50px;
   transform: translateX(-50%);
 }
+.bx-menu{
+  display: none;
+}
+
 .navbar ul{
   margin-top: 20px;
 }
@@ -201,10 +227,12 @@
   line-height: 50px;
   text-align: center;
 }
+.regionButton{
+  display: flex;
+  justify-content: space-between;
+}
 .navbar ul li .bxs-down-arrow{
-  position: absolute;
   font-size: 12px;
-  left: 75%;
 }
 
 .dropDownInative{
@@ -264,7 +292,9 @@
 }
 .navbar .profileContent .profile .profileDetails{
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin: 0px 5px;
 }
 .profile .profileDetails img{
   height: 45px;
@@ -278,28 +308,101 @@
   margin-left: 5px;
 }
 
-.profile #logOut{
-  position: absolute;
-  left: 88%;
-  bottom: 5px;
-  transform: translateX(-50%);
-  min-width: 50px;
-  line-height: 50px;
-  font-size: 20px;
-  border-radius: 12px;
+.closeButton{
+  display: none;
 }
+
 
 @media(max-width: 600px) {
   .navbar {
     width: 70px;
   }
+}
 
+@media(max-width: 450px) {
   .logoName{
+    
+  }
+  .bx-menu{
+    display: block;
+  }
+
+  .navbarActive{
+    z-index: 10;
+    width: 100%; 
+  }
+
+  .navbarInative{
+    position: fixed;
+    z-index: 2;
+    margin: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    align-items: center;
+    top:88%;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  }
+  .navbarInative > .logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navbarActive .logoContent{
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+  }
+
+  .navbarActive .logoContent .logo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .navbarActive ul li .bxs-down-arrow{
+    left: 80%;
+  }
+  .navbarActive .logoContent .closeButton{
+    display: block;
+  }
+
+  .navbarInative .logoContent .closeButton{
     display: none;
   }
-  span{
+
+  .navbarInative .logoContent{
+    justify-content: center;
+  }
+
+  .navbarInative .logoContent .logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .navbarInative .logoContent .logo .logoImg{
+    width: 50px;
+    margin: 5px;
+    margin-top: 10px;
+  }
+
+  .navbarInative .logoContent .closeButton{
     display: none;
   }
-  
+
+  .navbarInative span{
+    display: none;
+  }
+
+
+  .navbarInative > ul{
+    display: none;
+  }
+
+  .navbarInative > .profileContent {
+    display: none;
+  }
 }
 </style>

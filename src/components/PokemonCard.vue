@@ -113,7 +113,6 @@ function showPokemon(id) {
 </script>
 
 <template>
-  valor: {{ showDialog }}
   <div class="allCards" v-if="props.searchValue == ''">
     <div
       class="card"
@@ -249,6 +248,14 @@ function showPokemon(id) {
   .doubletype {
     flex-direction: column;
     margin: 20px auto;
+  }
+  .allCards {
+    width: 100%;
+    justify-content: center;
+    left: 0;
+    margin-top: 20px;
+  }
+  .card {
   }
 }
 </style>
