@@ -42,7 +42,7 @@ onBeforeMount(async () => {
           .front_default,
       types: data.types.map((type) => ({
         name: type.type.name,
-        icon: `../../public/img/${type.type.name}.svg`,
+        icon: `../../public/types/${type.type.name}.svg`,
       })),
       speciesUrl: data.species.url,
     };
