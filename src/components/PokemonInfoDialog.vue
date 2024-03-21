@@ -482,7 +482,7 @@ function capitalizeFirstLetter(str) {
   flex-direction: row;
   justify-content: center;
   background-color: var(--black);
-
+  flex-wrap: wrap;
   flex-grow: 1;
   border-radius: 20px;
 }
