@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, watch } from "vue";
 
 const props = defineProps({
   pokemonStats: Array,
@@ -7,6 +7,13 @@ const props = defineProps({
 
 const stats = ['Hp', 'Atk', 'Def', 'Sp.Atk', 'Sp.Def', 'Speed'];
 let i=0;
+
+watch(
+  () => props.pokemonStats,
+  async () => {
+    i=0;
+  }
+);
 
 </script>
 
@@ -44,6 +51,7 @@ let i=0;
   border-radius: 15px;
   padding: 5px;
   width: 100%;
+  
 }
 
 .tdTitleBar{
@@ -67,7 +75,7 @@ let i=0;
 .tdTitle{
   text-align: center;
   font-size: 25px;
-  padding: 5px;
+  padding: 10px;
   
 }
 
