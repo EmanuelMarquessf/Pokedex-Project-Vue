@@ -71,7 +71,7 @@ async function fetchPokemonDetails(pokemon) {
       .front_default;
   const types = details.types.map((type) => ({
     name: type.type.name,
-    icon: `../../public/types/${type.type.name}.svg`,
+    icon: `/types/${type.type.name}.svg`,
   }));
   const typesQuant = types.length > 1 ? "doubletype" : "monotype";
 

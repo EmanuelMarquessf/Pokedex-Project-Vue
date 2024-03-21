@@ -70,7 +70,7 @@ onBeforeMount(async () => {
           .front_default,
       types: data.types.map((type) => ({
         name: type.type.name,
-        icon: `../../public/types/${type.type.name}.svg`,
+        icon: `/types/${type.type.name}.svg`,
       })),
       speciesUrl: data.species.url,
     };
@@ -158,7 +158,7 @@ async function fetchPokemonVariant(varietiesUrl) {
           .front_default,
       types: data.types.map((type) => ({
         name: type.type.name,
-        icon: `../../public/types/${type.type.name}.svg`,
+        icon: `/types/${type.type.name}.svg`,
       })),
       speciesUrl: data.species.url,
     };
