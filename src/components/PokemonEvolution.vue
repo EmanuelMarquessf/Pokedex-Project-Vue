@@ -128,9 +128,6 @@ async function fetchEvolutionDetails(urlEvolutionChain) {
           <img :src="type.icon" alt="">
         </div>
       </div>
-      <span class="evolutionForm">
-        teste
-      </span>
     </div>
   </div>
 </template>
