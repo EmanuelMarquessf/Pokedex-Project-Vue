@@ -186,6 +186,8 @@ function showPokemon(id) {
   height: 100px;
   display: flex;
   justify-content: space-around;
+  user-select: none;
+  cursor: pointer;
 }
 .card:hover {
   background-color: var(--darkGreen);
